@@ -10,7 +10,7 @@ export default function SuccessPage() {
       </div>
       <h1 className="text-3xl font-bold text-[#1C1C1C] mb-3">Order confirmed!</h1>
       <p className="text-[#888] mb-8">
-        Thanks for your purchase. You'll receive a confirmation email shortly.
+        Thanks for your purchase. You&apos;ll receive a confirmation email shortly.
       </p>
       <Link
         href="/shop"

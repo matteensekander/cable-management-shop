@@ -1,6 +1,8 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 
 interface CartDrawerProps {
@@ -10,6 +12,30 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const [loading, setLoading] = React.useState(false);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cartItems.map(({ product, quantity }) => ({
+            name: product.name,
+            price: product.price,
+            quantity,
+            image: product.image,
+          })),
+        }),
+      });
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch {
+      alert('Something went wrong. Please try again.');
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -71,11 +97,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <ul className="divide-y divide-[#E8E6E1]">
               {cartItems.map(({ product, quantity }) => (
                 <li key={product.slug} className="py-4 flex gap-4">
-                  {/* Image placeholder */}
-                  <div className="w-16 h-16 bg-[#F0EEE9] rounded flex-shrink-0 flex items-center justify-center">
-                    <span className="text-[10px] text-[#888] text-center px-1 leading-tight">
-                      {product.name}
-                    </span>
+                  <div className="relative w-16 h-16 bg-[#F0EEE9] rounded flex-shrink-0 overflow-hidden">
+                    <Image src={product.image} alt={product.name} fill className="object-cover" sizes="64px" />
                   </div>
 
                   {/* Details */}
@@ -142,10 +165,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 View Cart
               </Link>
               <button
-                onClick={() => alert('Checkout coming soon!')}
-                className="bg-[#1C1C1C] hover:bg-[#333] text-white text-sm font-medium py-3 px-4 rounded transition-colors"
+                onClick={handleCheckout}
+                disabled={loading}
+                className="bg-[#1C1C1C] hover:bg-[#333] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium py-3 px-4 rounded transition-colors"
               >
-                Checkout
+                {loading ? 'Loading…' : 'Checkout'}
               </button>
             </div>
           </div>
