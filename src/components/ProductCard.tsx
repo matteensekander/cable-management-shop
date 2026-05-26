@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { Product } from '@/lib/products';
 
@@ -13,12 +14,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="bg-white border border-[#E8E6E1] rounded-[4px] flex flex-col hover:border-[#C8C6C1] transition-colors">
-      {/* Image placeholder */}
       <Link href={`/product/${product.slug}`} className="block">
-        <div className="bg-[#F0EEE9] aspect-[4/3] rounded-t-[4px] flex items-center justify-center p-6">
-          <span className="text-sm text-[#888] text-center leading-snug font-medium">
-            {product.name}
-          </span>
+        <div className="relative aspect-[4/3] rounded-t-[4px] overflow-hidden bg-[#F0EEE9]">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
         </div>
       </Link>
 

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { products, getProductBySlug, getRelatedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import AddToCartButton from '@/components/AddToCartButton';
@@ -69,19 +70,31 @@ export default function ProductPage({ params }: PageProps) {
         {/* Left: Image gallery */}
         <div>
           {/* Main image */}
-          <div className="bg-[#F0EEE9] border border-[#E8E6E1] rounded-[4px] aspect-[4/3] flex items-center justify-center mb-3">
-            <span className="text-base text-[#888] font-medium text-center px-8">
-              {product.name}
-            </span>
+          <div className="relative border border-[#E8E6E1] rounded-[4px] aspect-[4/3] overflow-hidden mb-3 bg-[#F0EEE9]">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
           </div>
           {/* Thumbnails */}
           <div className="flex gap-3">
-            {[1, 2, 3].map((i) => (
+            {[0, 20, 80].map((offset, i) => (
               <div
                 key={i}
-                className="bg-[#F0EEE9] border border-[#E8E6E1] rounded-[4px] aspect-square w-20 flex items-center justify-center cursor-pointer hover:border-[#1C1C1C] transition-colors"
+                className="relative border border-[#E8E6E1] rounded-[4px] aspect-square w-20 overflow-hidden cursor-pointer hover:border-[#1C1C1C] transition-colors bg-[#F0EEE9]"
               >
-                <span className="text-[10px] text-[#888] text-center px-1">{i}</span>
+                <Image
+                  src={product.image}
+                  alt={`${product.name} view ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: `${offset}% center` }}
+                  sizes="80px"
+                />
               </div>
             ))}
           </div>
