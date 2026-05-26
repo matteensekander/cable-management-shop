@@ -1,13 +1,35 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
 
-  const handleCheckout = () => {
-    alert('Checkout coming soon!');
+  const [loading, setLoading] = React.useState(false);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cartItems.map(({ product, quantity }) => ({
+            name: product.name,
+            price: product.price,
+            quantity,
+            image: product.image,
+          })),
+        }),
+      });
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch {
+      alert('Something went wrong. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -184,9 +206,10 @@ export default function CartPage() {
               </div>
               <button
                 onClick={handleCheckout}
-                className="mt-6 w-full bg-[#1C1C1C] hover:bg-[#333] text-white font-medium py-3.5 rounded text-sm transition-colors"
+                disabled={loading}
+                className="mt-6 w-full bg-[#1C1C1C] hover:bg-[#333] disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-3.5 rounded text-sm transition-colors"
               >
-                Proceed to Checkout
+                {loading ? 'Redirecting to Stripe…' : 'Proceed to Checkout'}
               </button>
               <p className="mt-4 text-xs text-[#888] text-center">
                 Free shipping on all orders
