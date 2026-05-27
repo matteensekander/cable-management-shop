@@ -3,9 +3,12 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+const PROD_URL = 'https://cable-management-shop.onrender.com';
+
 export async function POST(req: NextRequest) {
   const { items } = await req.json();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
+  const origin = req.nextUrl.origin;
+  const baseUrl = origin.includes('localhost') ? PROD_URL : origin;
 
   const line_items = items.map((item: { name: string; price: number; quantity: number; image: string }) => ({
     price_data: {
