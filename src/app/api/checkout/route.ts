@@ -5,13 +5,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   const { items } = await req.json();
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
 
   const line_items = items.map((item: { name: string; price: number; quantity: number; image: string }) => ({
     price_data: {
       currency: 'usd',
       product_data: {
         name: item.name,
-        images: item.image ? [`${req.nextUrl.origin}${item.image}`] : [],
+        images: item.image ? [`${baseUrl}${item.image}`] : [],
       },
       unit_amount: Math.round(item.price * 100),
     },
@@ -22,8 +23,8 @@ export async function POST(req: NextRequest) {
     payment_method_types: ['card'],
     line_items,
     mode: 'payment',
-    success_url: `${req.nextUrl.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${req.nextUrl.origin}/cart`,
+    success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${baseUrl}/cart`,
     shipping_address_collection: { allowed_countries: ['US', 'CA'] },
   });
 
