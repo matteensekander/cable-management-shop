@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { products, Product } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 
@@ -15,11 +15,13 @@ const categories: { label: string; value: Product['category'] | 'all' }[] = [
   { label: 'Boxes', value: 'boxes' },
 ];
 
+type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating';
+
 export default function ShopPage() {
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
-    new Set(['all'])
-  );
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(['all']));
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<SortOption>('featured');
 
   const toggleCategory = (value: string) => {
     setSelectedCategories((prev) => {
@@ -38,9 +40,24 @@ export default function ShopPage() {
     });
   };
 
-  const filteredProducts = selectedCategories.has('all')
-    ? products
-    : products.filter((p) => selectedCategories.has(p.category));
+  const filteredProducts = useMemo(() => {
+    let result = selectedCategories.has('all')
+      ? products
+      : products.filter((p) => selectedCategories.has(p.category));
+
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (p) => p.name.toLowerCase().includes(q) || p.shortDescription.toLowerCase().includes(q)
+      );
+    }
+
+    if (sort === 'price-asc') result = [...result].sort((a, b) => a.price - b.price);
+    else if (sort === 'price-desc') result = [...result].sort((a, b) => b.price - a.price);
+    else if (sort === 'rating') result = [...result].sort((a, b) => b.rating - a.rating);
+
+    return result;
+  }, [selectedCategories, search, sort]);
 
   const FilterPanel = () => (
     <div className="space-y-1">
@@ -70,8 +87,34 @@ export default function ShopPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1C1C1C] mb-2">Shop All Products</h1>
-        <p className="text-sm text-[#888]">
+        <h1 className="text-3xl font-bold text-[#1C1C1C] mb-6">Shop All Products</h1>
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Search */}
+          <div className="relative flex-1">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#AAA]" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search products…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 border border-[#E8E6E1] rounded text-sm bg-white text-[#1C1C1C] placeholder:text-[#AAA] focus:outline-none focus:border-[#1C1C1C] transition-colors"
+            />
+          </div>
+          {/* Sort */}
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortOption)}
+            className="border border-[#E8E6E1] rounded px-3 py-2 text-sm bg-white text-[#1C1C1C] focus:outline-none focus:border-[#1C1C1C] transition-colors cursor-pointer"
+          >
+            <option value="featured">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+        <p className="text-xs text-[#888] mt-3">
           {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
         </p>
       </div>

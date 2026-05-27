@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { products, getProductBySlug, getRelatedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import AddToCartButton from '@/components/AddToCartButton';
+import StarRating from '@/components/StarRating';
 
 interface PageProps {
   params: { slug: string };
@@ -105,7 +106,10 @@ export default function ProductPage({ params }: PageProps) {
           <span className="inline-block text-xs uppercase tracking-widest text-[#888] font-medium border border-[#E8E6E1] rounded px-2.5 py-1 mb-4">
             {product.category}
           </span>
-          <h1 className="text-3xl font-bold text-[#1C1C1C] mb-3">{product.name}</h1>
+          <h1 className="text-3xl font-bold text-[#1C1C1C] mb-2">{product.name}</h1>
+          <div className="mb-4">
+            <StarRating rating={product.rating} reviewCount={product.reviewCount} size="md" />
+          </div>
           <p className="text-2xl font-semibold text-[#1C1C1C] mb-6">
             ${product.price.toFixed(2)}
           </p>
@@ -116,6 +120,20 @@ export default function ProductPage({ params }: PageProps) {
 
           {/* Add to Cart (client component) */}
           <AddToCartButton product={product} />
+
+          {/* Trust badges */}
+          <div className="mt-6 grid grid-cols-3 gap-3 text-center">
+            {[
+              { icon: '🚚', label: 'Free Shipping' },
+              { icon: '↩️', label: '30-Day Returns' },
+              { icon: '🔒', label: 'Secure Checkout' },
+            ].map(({ icon, label }) => (
+              <div key={label} className="border border-[#E8E6E1] rounded p-3">
+                <div className="text-lg mb-1">{icon}</div>
+                <p className="text-[11px] text-[#666] font-medium">{label}</p>
+              </div>
+            ))}
+          </div>
 
           {/* Long description */}
           <div className="mt-8 pt-8 border-t border-[#E8E6E1] space-y-4">

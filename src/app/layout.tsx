@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import AnnouncementBar from '@/components/AnnouncementBar';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className="font-sans bg-[#F8F7F4] text-[#1C1C1C] min-h-screen flex flex-col antialiased">
         <CartProvider>
+          <AnnouncementBar />
           <Nav />
           <main className="flex-1">{children}</main>
           <Footer />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 
 export default function CartPage() {
@@ -79,10 +80,8 @@ export default function CartPage() {
                 <li key={product.slug} className="py-5">
                   {/* Mobile layout */}
                   <div className="flex gap-4 md:hidden">
-                    <div className="w-20 h-20 bg-[#F0EEE9] rounded flex-shrink-0 flex items-center justify-center">
-                      <span className="text-[10px] text-[#888] text-center px-1">
-                        {product.name}
-                      </span>
+                    <div className="relative w-20 h-20 bg-[#F0EEE9] rounded flex-shrink-0 overflow-hidden">
+                      <Image src={product.image} alt={product.name} fill className="object-cover" sizes="80px" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-[#1C1C1C]">{product.name}</p>
@@ -121,10 +120,8 @@ export default function CartPage() {
                   <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 items-center">
                     {/* Product */}
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-[#F0EEE9] rounded flex-shrink-0 flex items-center justify-center">
-                        <span className="text-[9px] text-[#888] text-center px-1 leading-tight">
-                          {product.name}
-                        </span>
+                      <div className="relative w-14 h-14 bg-[#F0EEE9] rounded flex-shrink-0 overflow-hidden">
+                        <Image src={product.image} alt={product.name} fill className="object-cover" sizes="56px" />
                       </div>
                       <div>
                         <Link

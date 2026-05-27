@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { Product } from '@/lib/products';
+import StarRating from './StarRating';
 
 interface ProductCardProps {
   product: Product;
@@ -38,6 +39,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
         </Link>
+        <div className="mb-2">
+          <StarRating rating={product.rating} reviewCount={product.reviewCount} />
+        </div>
         <p className="text-sm text-[#888] leading-relaxed flex-1 mb-4">
           {product.shortDescription}
         </p>
