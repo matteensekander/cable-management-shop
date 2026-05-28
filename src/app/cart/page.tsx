@@ -209,7 +209,12 @@ export default function CartPage() {
                 {loading ? 'Redirecting to Stripe…' : 'Proceed to Checkout'}
               </button>
               <p className="mt-4 text-xs text-[#888] text-center">
-                Free shipping on all orders
+                Free shipping · Delivered in 5–15 business days
+              </p>
+              <p className="mt-1 text-xs text-center">
+                <Link href="/shipping" className="text-[#AAA] hover:text-[#888] underline underline-offset-2 transition-colors">
+                  Shipping info
+                </Link>
               </p>
             </div>
           </div>

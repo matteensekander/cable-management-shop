@@ -44,6 +44,11 @@ export default function Footer() {
                   Cart
                 </Link>
               </li>
+              <li>
+                <Link href="/shipping" className="text-sm text-[#666] hover:text-[#1C1C1C] transition-colors">
+                  Shipping Info
+                </Link>
+              </li>
               <li className="pt-2 border-t border-[#E8E6E1]">
                 <Link href="/fulfillment" className="text-xs text-[#BBB] hover:text-[#888] transition-colors">
                   Owner: Fulfillment Guide
