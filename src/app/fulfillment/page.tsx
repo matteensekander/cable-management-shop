@@ -2,58 +2,79 @@ const products = [
   {
     name: 'Under-Desk Cable Tray',
     yourPrice: 24.99,
-    aliCost: 6.00,
-    link: 'https://www.aliexpress.com/w/wholesale-cable-management-tray-under-desk.html',
-    notes: 'Search "under desk cable tray clamp mount steel mesh". Pick one with 4+ stars, 500+ orders.',
+    aliCost: 4.00,
+    link: 'https://www.aliexpress.us/item/3256807335975547.html',
+    badge: '4.5★ · 4,000+ sold',
+    notes: 'Direct link to exact item. At checkout enter the customer\'s address, not yours.',
   },
   {
     name: 'Velcro Cable Tie Pack 50ct',
     yourPrice: 9.99,
-    aliCost: 1.50,
-    link: 'https://www.aliexpress.com/w/wholesale-velcro-cable-ties.html',
-    notes: 'Search "velcro cable ties 50 pack black reusable". Very cheap, huge margin.',
+    aliCost: 1.61,
+    link: 'https://www.aliexpress.us/item/3256806893053801.html',
+    badge: '4.9★ · 5,000+ sold',
+    notes: 'Direct link to exact item. Order the 50-pack size option.',
   },
   {
     name: 'Cable Raceway Kit',
     yourPrice: 19.99,
-    aliCost: 5.00,
-    link: 'https://www.aliexpress.com/w/wholesale-cable-raceway-kit.html',
-    notes: 'Search "cable raceway wall kit with adhesive". Look for 6ft kit with connectors included.',
+    aliCost: 5.16,
+    link: 'https://www.aliexpress.us/item/3256811636365177.html',
+    badge: '4.9★ · 5,000+ sold',
+    notes: 'Direct link to exact item. Select the 2-meter or 3-meter option.',
   },
   {
     name: 'Complete Desk Cable Kit',
     yourPrice: 49.99,
-    aliCost: 18.00,
-    link: 'https://www.aliexpress.com/w/wholesale-cable-management-kit.html',
-    notes: 'Bundle: order 1x tray (~$6) + 1x velcro ties (~$2) + 1x clips (~$2) + 1x box (~$8) separately and ship together, OR find a pre-made kit listing.',
+    aliCost: 17.00,
+    link: '',
+    badge: 'Bundle — 4 separate orders',
+    notes: 'Order these 4 items separately and they\'ll ship to the customer: 1× Cable Tray + 1× Velcro Ties + 1× Cable Clips + 1× Cable Management Box. Use the individual links below.',
+    isBundle: true,
+    bundleItems: [
+      { name: 'Cable Tray', link: 'https://www.aliexpress.us/item/3256807335975547.html' },
+      { name: 'Velcro Ties', link: 'https://www.aliexpress.us/item/3256806893053801.html' },
+      { name: 'Cable Clips', link: 'https://www.aliexpress.us/item/3256809010911014.html' },
+      { name: 'Cable Box', link: 'https://www.aliexpress.us/item/3256811990842193.html' },
+    ],
   },
   {
     name: 'Cable Sleeve 6ft',
     yourPrice: 14.99,
     aliCost: 2.50,
-    link: 'https://www.aliexpress.com/w/wholesale-braided-cable-sleeve.html',
-    notes: 'Search "braided cable sleeve split loom 6ft black". Check it has the lengthwise slit.',
+    link: 'https://www.aliexpress.com/item/32826787908.html',
+    badge: '4.8★ · 10,000+ sold',
+    notes: 'Select the 2m (6ft) length and 10–15mm width. Black color.',
   },
   {
     name: 'Adhesive Cable Clips 30ct',
     yourPrice: 7.99,
-    aliCost: 1.50,
-    link: 'https://www.aliexpress.com/w/wholesale-adhesive-cable-clips.html',
-    notes: 'Search "self adhesive cable clips 30 pack". Get mixed sizes if possible.',
+    aliCost: 1.47,
+    link: 'https://www.aliexpress.us/item/3256809010911014.html',
+    badge: '4.9★ · 4,000+ sold',
+    notes: 'Direct link to exact item. Select 30-piece pack option.',
   },
   {
     name: 'Cable Management Box',
     yourPrice: 29.99,
-    aliCost: 12.00,
-    link: 'https://www.aliexpress.com/w/wholesale-cable-management-box.html',
-    notes: 'Search "cable management box power strip hider". Make sure interior fits standard power strip.',
+    aliCost: 10.77,
+    link: 'https://www.aliexpress.us/item/3256811990842193.html',
+    badge: '4.9★ · 10,000+ sold',
+    notes: 'Direct link to exact item. Best seller with huge order count — reliable supplier.',
   },
   {
     name: 'Dual Monitor Cable Kit',
     yourPrice: 39.99,
-    aliCost: 15.00,
-    link: 'https://www.aliexpress.com/w/wholesale-cable-management-kit.html',
-    notes: 'Bundle: order 1x raceway kit (~$5) + 1x velcro 30ct (~$1.50) + 1x clips 20ct (~$1.50) + 1x sleeve 3ft (~$1.50). Ship together.',
+    aliCost: 13.00,
+    link: '',
+    badge: 'Bundle — 3 separate orders',
+    notes: 'Order these 3 items separately: 1× Raceway Kit + 1× Velcro Ties + 1× Cable Clips.',
+    isBundle: true,
+    bundleItems: [
+      { name: 'Raceway Kit', link: 'https://www.aliexpress.us/item/3256811636365177.html' },
+      { name: 'Velcro Ties', link: 'https://www.aliexpress.us/item/3256806893053801.html' },
+      { name: 'Cable Clips', link: 'https://www.aliexpress.us/item/3256809010911014.html' },
+    ],
   },
 ];
 
@@ -84,25 +105,45 @@ export default function FulfillmentPage() {
           const margin = Math.round((profit / p.yourPrice) * 100);
           return (
             <div key={p.name} className="border border-[#E8E6E1] rounded bg-white p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                <h3 className="font-semibold text-[#1C1C1C]">{p.name}</h3>
-                <div className="flex items-center gap-4 text-sm flex-shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+                <div>
+                  <h3 className="font-semibold text-[#1C1C1C]">{p.name}</h3>
+                  <span className="text-xs text-amber-600 font-medium">{p.badge}</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm flex-shrink-0 flex-wrap">
                   <span className="text-[#888]">You charge: <strong className="text-[#1C1C1C]">${p.yourPrice.toFixed(2)}</strong></span>
-                  <span className="text-[#888]">AliExpress cost: <strong className="text-[#1C1C1C]">~${p.aliCost.toFixed(2)}</strong></span>
+                  <span className="text-[#888]">Cost: <strong className="text-[#1C1C1C]">~${p.aliCost.toFixed(2)}</strong></span>
                   <span className="bg-green-100 text-green-700 font-semibold px-2.5 py-1 rounded text-xs">
                     +${profit.toFixed(2)} profit ({margin}%)
                   </span>
                 </div>
               </div>
               <p className="text-sm text-[#666] mb-3">{p.notes}</p>
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 bg-[#1C1C1C] hover:bg-[#333] text-white text-xs font-medium px-4 py-2 rounded transition-colors"
-              >
-                Open AliExpress →
-              </a>
+
+              {'isBundle' in p && p.isBundle && p.bundleItems ? (
+                <div className="flex flex-wrap gap-2">
+                  {p.bundleItems.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 bg-[#1C1C1C] hover:bg-[#333] text-white text-xs font-medium px-3 py-2 rounded transition-colors"
+                    >
+                      Order: {item.name} →
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 bg-[#1C1C1C] hover:bg-[#333] text-white text-xs font-medium px-4 py-2 rounded transition-colors"
+                >
+                  Open AliExpress →
+                </a>
+              )}
             </div>
           );
         })}
