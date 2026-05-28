@@ -44,6 +44,11 @@ export default function Footer() {
                   Cart
                 </Link>
               </li>
+              <li className="pt-2 border-t border-[#E8E6E1]">
+                <Link href="/fulfillment" className="text-xs text-[#BBB] hover:text-[#888] transition-colors">
+                  Owner: Fulfillment Guide
+                </Link>
+              </li>
             </ul>
           </div>
 
