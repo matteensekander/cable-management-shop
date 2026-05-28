@@ -19,25 +19,26 @@ Your personality: warm, practical, efficient. You ask about their setup (monitor
 export async function POST(req: NextRequest) {
   const { messages } = await req.json();
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY!,
-      'anthropic-version': '2023-06-01',
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'llama-3.3-70b-versatile',
       max_tokens: 1024,
       stream: true,
-      system: CLEO_SYSTEM_PROMPT,
-      messages,
+      messages: [
+        { role: 'system', content: CLEO_SYSTEM_PROMPT },
+        ...messages,
+      ],
     }),
   });
 
   if (!response.ok) {
     return new Response(
-      JSON.stringify({ error: 'Failed to call Anthropic API' }),
+      JSON.stringify({ error: 'Failed to call Groq API' }),
       { status: response.status, headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -64,13 +65,8 @@ export async function POST(req: NextRequest) {
               if (!data) continue;
               try {
                 const parsed = JSON.parse(data);
-                if (
-                  parsed.type === 'content_block_delta' &&
-                  parsed.delta?.type === 'text_delta' &&
-                  parsed.delta?.text
-                ) {
-                  controller.enqueue(encoder.encode(parsed.delta.text));
-                }
+                const text = parsed.choices?.[0]?.delta?.content;
+                if (text) controller.enqueue(encoder.encode(text));
               } catch {
                 // Ignore JSON parse errors for incomplete chunks
               }
