@@ -39,6 +39,12 @@ export default function Nav() {
               >
                 AI Assistant
               </Link>
+              <Link
+                href="/about"
+                className="text-sm text-[#1C1C1C] hover:text-[#555] transition-colors"
+              >
+                About
+              </Link>
             </div>
 
             {/* Right: Cart icon */}
@@ -116,6 +122,13 @@ export default function Nav() {
               onClick={() => setMobileOpen(false)}
             >
               AI Assistant
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm text-[#1C1C1C] py-1"
+              onClick={() => setMobileOpen(false)}
+            >
+              About
             </Link>
           </div>
         )}
