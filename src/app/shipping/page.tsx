@@ -71,7 +71,7 @@ export default function ShippingPage() {
         <div className="bg-[#F8F7F4] border border-[#E8E6E1] rounded-[4px] p-6">
           <h2 className="font-semibold text-[#1C1C1C] mb-2">Questions about your order?</h2>
           <p className="text-sm text-[#666]">
-            Email us at <a href="mailto:adeebjon@gmail.com" className="text-[#1C1C1C] underline underline-offset-2">adeebjon@gmail.com</a> and we&apos;ll get back to you within 24 hours.
+            Email us at <a href="mailto:matteensekander@gmail.com" className="text-[#1C1C1C] underline underline-offset-2">matteensekander@gmail.com</a> and we&apos;ll get back to you within 24 hours.
           </p>
         </div>
 

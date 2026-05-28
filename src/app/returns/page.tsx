@@ -63,8 +63,8 @@ export default function ReturnsPage() {
           <h2 className="font-semibold text-[#1C1C1C] mb-2">How to start a return</h2>
           <p>
             Email us at{' '}
-            <a href="mailto:adeebjon@gmail.com" className="text-[#1C1C1C] underline underline-offset-2">
-              adeebjon@gmail.com
+            <a href="mailto:matteensekander@gmail.com" className="text-[#1C1C1C] underline underline-offset-2">
+              matteensekander@gmail.com
             </a>{' '}
             with your order details and reason for return. We respond within 24 hours.
           </p>
